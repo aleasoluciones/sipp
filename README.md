@@ -1,7 +1,8 @@
-Configuración en Asterisk
+#Configuración en Asterisk
 (lab-niv1 → Asterisk 11.10.2)
 
-#sip-red.conf
+sip-red.conf
+
 [sipp]
 username=sipp
 secret=f8c1f71d847827309cdd6a944edea998
@@ -56,18 +57,20 @@ setvar=__VMCONTEXT=default
 setvar=__ECID=2005
 callerid="" <2005>
 
-#/etc/asterisk/extensions_custom.conf 
+
+/etc/asterisk/extensions_custom.conf 
+
 [sipp]
 exten => 2004,1,Macro(dial-exten,SIP/sipp,sipp,es)
 exten => 2005,1,Macro(dial-exten,SIP/sipp_2,sipp,es)
 
 
 
-Configuración UAC
+#Configuración UAC
 
-acruz-pc$ sudo ./sipp -sf Reg_inv_test.xml -s 2005 -inf Param_file_sequential.txt -d 20000 192.168.5.6:6960 -l 1 -r 1 -i 192.168.111.207
+sudo ./sipp -sf Reg_inv_test.xml -s 2005 -inf Param_file_sequential.txt -d 20000 192.168.5.6:6960 -l 1 -r 1 -i 192.168.111.207
 
-Configuración UAS
+#Configuración UAS
 
-#sipp -sn uas -p 5060 -i 192.168.5.115 -mi 192.168.5.115
+sipp -sn uas -p 5060 -i 192.168.5.115 -mi 192.168.5.115
 
