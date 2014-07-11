@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE scenario SYSTEM "sipp.dtd">
+
+<scenario name="registration and simple IMS session setup, client side">
+
+<send retrans="500">
+<![CDATA[
+REGISTER sip:[field1] SIP/2.0
+Via: SIP/2.0/[transport] [local_ip]:[local_port];branch=[branch]
+Max-Forwards: 70
+From: "[field0]" <sip:[field0]@[field1]>;tag=[call_number]
+To: "[field0]" <sip:[field0]@[field1]>
+P-Access-Network-Info: 3GPP-UTRAN-TDD;utran-cell-id-3gpp=C359A3913B20E
+Call-ID: reg///[call_id]
+CSeq: 1 REGISTER
+Contact: <sip:[field0]@[local_ip]:[local_port]>;
+Expires: 90000
+Content-Length: 0
+User-Agent: Sipp v1.1-TLS, version 20061124
+Authorization: Digest username="[field0]@[field1]", realm="[field1]", nonce="", response="", uri="sip:[field1]"
+Supported: path
+P-Access-Network-Info: ADSL;utran-cell-id-3gpp=00000000
+Privacy: none
+]]>
+</send>
+
+<recv response="401" auth="true" rtd="true">
+</recv>
+
+<send retrans="500">
+<![CDATA[
+REGISTER sip:[field1] SIP/2.0
+Via: SIP/2.0/[transport] [local_ip]:[local_port];branch=[branch]
+Max-Forwards: 70
+From: "[field0]" <sip:[field0]@[field1]>;tag=[call_number]
+To: "[field0]" <sip:[field0]@[field1]>
+P-Access-Network-Info: 3GPP-UTRAN-TDD;utran-cell-id-3gpp=C359A3913B20E
+Call-ID: reg///[call_id]
+CSeq: 2 REGISTER
+Contact: <sip:[field0]@[local_ip]:[local_port]>
+Expires: 90000
+Content-Length: 0
+User-Agent: Sipp v1.1-TLS, version 20061124
+[field2]
+Supported: path
+P-Access-Network-Info: ADSL;utran-cell-id-3gpp=00000000
+Privacy: none
+]]>
+</send>
+
+<recv response="200" rtd="true">
+</recv>
+
+<send retrans="500">
+<![CDATA[
+INVITE sip:[field3]@[field1] SIP/2.0
+Via: SIP/2.0/[transport] 192.168.1.10:4060;branch=[branch]
+Max-Forwards: 70
+Route: <sip:orig@...:6060;lr>
+P-Preferred-Identity: <sip:[field0]@[field1]>
+Privacy: none
+P-Access-Network-Info: 3GPP-UTRAN-TDD;utran-cell-id-3gpp=C359A3913B20E
+From: <sip:[field0]@[field1]>;tag=[call_number]
+To: <sip:[field3]@[field1]>
+Call-ID: call///[call_id]
+CSeq: 10 INVITE
+Supported: 100rel
+Contact: <sip:[field0]@[local_ip]:[local_port]>
+User-Agent: Sipp v1.1-TLS, version 20061124
+Allow: ACK, BYE, CANCEL, INVITE, REFER, OPTIONS, INFO, REGISTER, NOTIFY
+Content-Type: application/sdp
+Content-Length: [len]
+
+v=0
+o=user1 53655765 2353687637 IN IP4 [local_ip]
+s=-
+c=IN IP4 [local_ip]
+t=0 0
+m=audio 30000 RTP/AVP 0 8
+a=rtpmap:0 PCMU/8000
+a=sendrecv
+]]>
+</send>
+
+<recv response="100" optional="true">
+</recv>
